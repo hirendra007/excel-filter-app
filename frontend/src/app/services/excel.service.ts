@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ExcelRecord {
   _id?: string;
@@ -25,7 +26,7 @@ export interface FilterResponse {
   providedIn: 'root'
 })
 export class ExcelService {
-  private apiUrl = 'http://localhost:3000/api'; // Change this to your backend URL
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -42,7 +43,6 @@ export class ExcelService {
   getExcelData(): Observable<{ data: ExcelRecord[] }> {
     return this.http.get<{ data: ExcelRecord[] }>(`${this.apiUrl}/data`);
   }
-
 
   getFiles(): Observable<ExcelFile[]> {
     return this.http.get<ExcelFile[]>(`${this.apiUrl}/files`);
