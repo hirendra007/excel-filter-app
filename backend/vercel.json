@@ -1,9 +1,26 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" }
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" }
+    {
+      "src": "/api/(.*)",   
+      "dest": "/server.js"
+    },
+    {
+      "src": "/favicon.ico",      
+      "headers": {
+        "Cache-Control": "max-age=86400"
+      },
+      "status": 204
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
   ]
 }
