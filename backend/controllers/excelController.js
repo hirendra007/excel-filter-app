@@ -4,7 +4,7 @@ const ExcelData = require('../models/ExcelData');
 exports.getAllData = async (req, res) => {
   try {
     const data = await ExcelData.find();
-    res.json(data);
+    res.json({ data }); // ✅ wrapped in { data: [...] } for frontend compatibility
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
