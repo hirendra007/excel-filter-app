@@ -11,10 +11,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/exceldb')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
+mongoose.connect('mongodb://Dheeraj:Dheeraj%40123@ac-qrutsty-shard-00-00.r3p61jm.mongodb.net:27017,ac-qrutsty-shard-00-01.r3p61jm.mongodb.net:27017,ac-qrutsty-shard-00-02.r3p61jm.mongodb.net:27017/?ssl=true&replicaSet=atlas-4cksr1-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch((err) => console.error('MongoDB connection error:', err));
 // File Upload Setup
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
