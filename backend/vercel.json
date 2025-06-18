@@ -11,5 +11,6 @@
       "src": "/(.*)",
       "dest": "/server.js"
     }
-  ]
+  ],
+  "installCommand": "npm i mongoose@8.3.1 && npm install"
 }
