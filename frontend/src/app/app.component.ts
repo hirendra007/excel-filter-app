@@ -73,12 +73,13 @@ export class AppComponent implements OnInit {
   loadExcelData() {
     this.loading = true;
     this.excelService.getExcelData().subscribe({
-      next: (response: any[]) => {
-        if (Array.isArray(response)) {
-          this.excelData = response;
-          this.filteredData = [...response];
-          if (response.length > 0) {
-            this.columns = Object.keys(response[0]).filter(key => key !== '_id' && key !== '__v');
+      next: (response: { data: any[] }) => {
+        const data = response.data;
+        if (Array.isArray(data)) {
+          this.excelData = data;
+          this.filteredData = [...data];
+          if (data.length > 0) {
+            this.columns = Object.keys(data[0]).filter(key => key !== '_id' && key !== '__v');
             this.initializeFilters();
           }
         } else {
