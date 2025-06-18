@@ -10,7 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExcelService, ExcelFile, FilterResponse } from './excel.service';
+import { ExcelService, ExcelFile, FilterResponse } from './services/excel.service';
 
 @Component({
   selector: 'app-data-filter',

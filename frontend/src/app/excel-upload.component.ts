@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExcelService } from './excel.service';
+import { ExcelService } from './services/excel.service';
 
 @Component({
   selector: 'app-excel-upload',

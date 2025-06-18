@@ -1,0 +1,110 @@
+<div class="excel-manager">
+  <header class="header">
+    <h1>{{ title }}</h1>
+    <p class="subtitle">Upload and filter Excel data with MongoDB storage</p>
+  </header>
+
+  <div class="container">
+    <!-- Upload Section -->
+    <div class="upload-section">
+      <h2>Upload Excel</h2>
+      
+      <div class="upload-container">
+        <h3>Upload Excel File</h3>
+        <div class="file-input-wrapper">
+          <input 
+            type="file" 
+            id="fileInput"
+            (change)="onFileSelected($event)" 
+            accept=".xlsx,.xls"
+            class="file-input">
+          <label for="fileInput" class="file-label">Choose File</label>
+        </div>
+        
+        <button 
+          class="upload-btn" 
+          (click)="uploadFile()" 
+          [disabled]="!selectedFile || loading">
+          {{ loading ? 'Uploading...' : 'Upload File' }}
+        </button>
+        
+        <div class="selected-file" *ngIf="selectedFile">
+          Selected: {{ selectedFile.name }}
+        </div>
+        
+        <div class="message" [ngClass]="{'success': uploadMessage.includes('success'), 'error': uploadMessage.includes('Error')}" *ngIf="uploadMessage">
+          {{ uploadMessage }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Display Section -->
+    <div class="data-section" *ngIf="excelData.length > 0">
+      <div class="data-header">
+        <h2>Excel Data ({{ filteredData.length }} of {{ excelData.length }} records)</h2>
+        <div class="action-buttons">
+          <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+          <button class="delete-btn" (click)="deleteAllData()">Delete All Data</button>
+        </div>
+      </div>
+
+      <!-- Global Search -->
+      <div class="search-container">
+        <input 
+          type="text" 
+          placeholder="Search across all columns..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange($event)"
+          class="search-input">
+      </div>
+
+      <!-- Column Filters -->
+      <div class="filters-container" *ngIf="columns.length > 0">
+        <h3>Column Filters</h3>
+        <div class="filters-grid">
+          <div class="filter-item" *ngFor="let column of columns">
+            <label>{{ column }}</label>
+            <input 
+              type="text" 
+              [placeholder]="'Filter ' + column + '...'"
+              [(ngModel)]="filters[column]"
+              (ngModelChange)="onFilterChange(column, $event)"
+              class="filter-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- No Records Message -->
+      <div class="no-records" *ngIf="noRecordsMessage">
+        {{ noRecordsMessage }}
+      </div>
+
+      <!-- Data Table -->
+      <div class="table-container" *ngIf="filteredData.length > 0">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns">{{ column }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of filteredData; let i = index" [ngClass]="{'even': i % 2 === 0}">
+              <td *ngFor="let column of columns">{{ row[column] || '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Data Message -->
+    <div class="no-data" *ngIf="excelData.length === 0 && !loading">
+      <p>No data available. Please upload an Excel file to get started.</p>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Processing...</p>
+    </div>
+  </div>
+</div>
