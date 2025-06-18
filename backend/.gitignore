@@ -19,7 +19,7 @@ build/
 dist-ssr/
 
 # Dependency directories
-node_modules/
+node_modules
 
 # Environment files
 .env
