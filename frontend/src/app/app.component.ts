@@ -7,8 +7,8 @@ import { ExcelService } from './services/excel.service';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './app.component.html', // Fixed path
-  styleUrls: ['./app.component.css'] // Fixed path
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'Excel File Manager';
@@ -51,15 +51,14 @@ export class AppComponent implements OnInit {
         this.loadExcelData();
         this.selectedFile = null;
         this.loading = false;
-        // Reset file input
+
         const fileInput = document.getElementById('fileInput') as HTMLInputElement;
         if (fileInput) fileInput.value = '';
       },
       error: (error) => {
         console.error('Upload error:', error);
         this.loading = false;
-        
-        // Display user-friendly error message
+
         if (error.status === 0) {
           this.uploadMessage = 'Error: Cannot connect to server. Please make sure the backend is running.';
         } else if (error.error && error.error.message) {
@@ -74,33 +73,31 @@ export class AppComponent implements OnInit {
   loadExcelData() {
     this.loading = true;
     this.excelService.getExcelData().subscribe({
-      next: (data) => {
-        // Check if data is an array
-        if (Array.isArray(data)) {
-          this.excelData = data;
-          this.filteredData = [...data];
-          if (data.length > 0) {
-            this.columns = Object.keys(data[0]).filter(key => key !== '_id' && key !== '__v');
+      next: (response: any[]) => {
+        if (Array.isArray(response)) {
+          this.excelData = response;
+          this.filteredData = [...response];
+          if (response.length > 0) {
+            this.columns = Object.keys(response[0]).filter(key => key !== '_id' && key !== '__v');
             this.initializeFilters();
           }
         } else {
-          console.error('API did not return an array:', data);
+          console.error('API did not return an array:', response);
+          this.uploadMessage = 'Error: Invalid response from server';
           this.excelData = [];
           this.filteredData = [];
           this.columns = [];
-          this.uploadMessage = 'Error: Invalid response from server';
         }
         this.loading = false;
         this.updateNoRecordsMessage();
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading data:', error);
         this.excelData = [];
         this.filteredData = [];
         this.columns = [];
         this.loading = false;
-        
-        // Display user-friendly error message
+
         if (error.status === 0) {
           this.uploadMessage = 'Error: Cannot connect to server. Please make sure the backend is running.';
         } else if (error.error && error.error.message) {
@@ -131,17 +128,15 @@ export class AppComponent implements OnInit {
 
   applyFilters() {
     this.filteredData = this.excelData.filter(row => {
-      // Apply column filters
       const columnFilters = Object.keys(this.filters).every(column => {
         const filterValue = this.filters[column].toLowerCase().trim();
         if (!filterValue) return true;
-        
+
         const cellValue = row[column] ? row[column].toString().toLowerCase() : '';
         return cellValue.includes(filterValue);
       });
 
-      // Apply search term across all columns
-      const searchMatch = !this.searchTerm || 
+      const searchMatch = !this.searchTerm ||
         this.columns.some(column => {
           const cellValue = row[column] ? row[column].toString().toLowerCase() : '';
           return cellValue.includes(this.searchTerm.toLowerCase());
@@ -149,7 +144,7 @@ export class AppComponent implements OnInit {
 
       return columnFilters && searchMatch;
     });
-    
+
     this.updateNoRecordsMessage();
   }
 

@@ -39,9 +39,10 @@ export class ExcelService {
     return this.uploadExcel(formData);
   }
 
-  getExcelData(): Observable<ExcelRecord[]> {
-    return this.http.get<ExcelRecord[]>(`${this.apiUrl}/data`);
+  getExcelData(): Observable<{ data: ExcelRecord[] }> {
+    return this.http.get<{ data: ExcelRecord[] }>(`${this.apiUrl}/data`);
   }
+
 
   getFiles(): Observable<ExcelFile[]> {
     return this.http.get<ExcelFile[]>(`${this.apiUrl}/files`);
