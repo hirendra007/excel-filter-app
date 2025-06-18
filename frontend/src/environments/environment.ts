@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api' // Your local backend
+  apiUrl: 'https://excel-filter-app-dun.vercel.app/api' // Your local backend
 };
